@@ -1,5 +1,5 @@
 const Header = (props) => {
-  return <h1>{props.course}</h1>
+  return <h1>{props.course.name}</h1>
 }
 
 const Content = (props) => {
@@ -46,7 +46,7 @@ const App = () => {
 
   return (
     <div>
-      <Header course={course.name} />
+      <Header course={course} />
       <Content course={course} />
       <Total course={course} />
     </div>
