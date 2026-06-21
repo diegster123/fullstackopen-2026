@@ -1,5 +1,17 @@
 import { useState } from "react";
 
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
+
+const Anecdote = ({ anecdotes, selected, votes }) => (
+  <p>
+    {anecdotes[selected]}
+    <br />
+    has {votes[selected]} votes
+  </p>
+);
+
+const Header = ({ header }) => <h1>{header}</h1>;
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -11,10 +23,36 @@ const App = () => {
     "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.",
     "The only way to go fast, is to go well.",
   ];
-  console.log(anecdotes);
-  const [selected, setSelected] = useState(0);
 
-  return <div>{anecdotes[selected]}</div>;
+  const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+
+  const selectRandom = () =>
+    setSelected(Math.floor(Math.random() * anecdotes.length));
+
+  const voteAnectode = () => {
+    const copy = [...votes];
+    copy[selected] += 1;
+    setVotes(copy);
+  };
+
+  const max = Math.max(...votes);
+  const mostVotedAnectode = votes.indexOf(max);
+
+  return (
+    <div>
+      <Header header="Anecdote of the day" />
+      <Anecdote anecdotes={anecdotes} selected={selected} votes={votes} />
+      <Button onClick={voteAnectode} text="vote" />
+      <Button onClick={selectRandom} text="next anecdote" />
+      <Header header="Anecdote with most votes" />
+      <Anecdote
+        anecdotes={anecdotes}
+        selected={mostVotedAnectode}
+        votes={votes}
+      />
+    </div>
+  );
 };
 
 export default App;
